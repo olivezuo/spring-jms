@@ -1,0 +1,22 @@
+server:
+  port: 8080
+com:
+  jin:
+    jms:
+      queueManager: xxxxx
+      host: xxxxx
+      channel: xxxxx
+      port: xxxxx
+    consumer:
+      first:
+        queueName: xxxxx
+        maxConcurrentConsumers: 10
+        concurrentConsumers: 3
+    producer:
+      first:
+        queueName: xxxxx
+spring:
+  application:
+    name: spring-jms
+logging:
+  file: ./target/spring-jms.log

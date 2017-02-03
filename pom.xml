@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.jin</groupId>
+	<artifactId>spring-jms</artifactId>
+	<version>1.0.0</version>
+	<packaging>war</packaging>
+
+	<name>spring-jms</name>
+	<description>Sample project for spring jms</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.4.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>spring</id>
+			<activation>
+	            <property>
+	                <name>env</name>
+	            </property>
+	       	</activation>			
+			<build>
+				<finalName>spring-jms</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+			            <artifactId>maven-antrun-plugin</artifactId>
+			            <version>1.8</version>
+			            <executions>
+			               <execution>
+			                  <phase>compile</phase>
+			                  <goals>
+			                     <goal>run</goal>
+			                  </goals>
+			                  <configuration>
+			                  <tasks>
+			                     <echo>Using Environment Properties</echo>
+						            <copy file="config/application-${env}.yml" tofile="${project.build.outputDirectory}/application.yml"/>
+								    <copy file="config/logback-spring-${env}.xml" tofile="${project.build.outputDirectory}/logback-spring.xml"/>
+			                  </tasks>
+			                  </configuration>
+			               </execution>
+			            </executions>
+            		</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jms</artifactId>
+		</dependency>		
+		<dependency>
+		    <groupId>javax.jms</groupId>
+		    <artifactId>javax.jms-api</artifactId>
+		    <version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.websphere.wmq.jmsra</groupId>
+  			<artifactId>com.ibm.mq.allclient.jar</artifactId>
+			<version>8.0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+</project>
