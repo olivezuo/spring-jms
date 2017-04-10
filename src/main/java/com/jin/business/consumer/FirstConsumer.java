@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
 import com.jin.business.service.FirstService;
@@ -26,13 +27,9 @@ public class FirstConsumer extends AbsJmsMessageConsumer {
 	}
 	
 	@Override
-	protected <T> T getMessageObj(T decodedMessage) {		
-		return decodedMessage;
-	}
-
-	@Override
 	protected <T> void process(T message) throws Exception {
-		firstService.printMessage((String)message);
+		logger.info("The message headers are :" + ((Message<?>)message).getHeaders().toString());
+		firstService.printMessage((String)((Message<?>)message).getPayload());
 	}
 
 }

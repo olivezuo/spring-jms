@@ -3,6 +3,7 @@ package com.jin.queue.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.MessagePostProcessor;
 import org.springframework.stereotype.Service;
 
 import com.jin.queue.config.JmsConfig;
@@ -14,8 +15,9 @@ public class JmsMessageSendServiceImpl implements JmsMessageSendService {
 	@Autowired
 	JmsConfig jmsConfig;
 	
-	public void send(String queueName, String message) {
-		jmsConfig.mqJmsTemplate().convertAndSend(queueName, message);
+	public <T> void send(String queueName,T message, MessagePostProcessor messagePostProcessor) {
+		
+		jmsConfig.mqJmsTemplate().convertAndSend(queueName, message, messagePostProcessor);
 		logger.info("Send message successfully. The messge is " + message);
 		
 	}

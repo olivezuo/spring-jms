@@ -1,16 +1,14 @@
 package com.jin.queue.service;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
 import javax.jms.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
-import org.springframework.jms.listener.SessionAwareMessageListener;
-import org.springframework.jms.listener.SimpleMessageListenerContainer;
+import org.springframework.jms.listener.adapter.MessageListenerAdapter;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
 import com.jin.queue.config.JmsConfig;
@@ -48,11 +46,13 @@ public abstract class JmsMessageReceiveServiceImpl implements JmsMessageReceiveS
 		defaultMessageListenerContainer.setTransactionTimeout(2);
 	}
 	
-	protected SessionAwareMessageListener<Message> sessionAwareMessageListener() {
-		return new SessionAwareMessageListener<Message>() {
+	protected MessageListenerAdapter sessionAwareMessageListener() {
+		return new MessageListenerAdapter() {
 			@Override
-			public void onMessage(Message message, Session session) throws JMSException {
-				receive(message, session);				
+			public void onMessage(javax.jms.Message message, Session session) throws JMSException {
+				Message<?> messagingMessage = (Message<?>)this.getMessagingMessageConverter().fromMessage(message);
+				receive(messagingMessage, session);
+				//session.close();
 			}
 		};
 	}	
